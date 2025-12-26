@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Open+Sans:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+/* Body text - clean serif */
+body, p, li, blockquote {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+/* Table text - smaller than body */
+table, td, th {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 15px !important;
+  line-height: 1.5;
+}
+
+/* Headings - sans-serif for modern contrast */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Open Sans', -apple-system, sans-serif;
+  font-weight: 600;
+}
+
+/* Code font */
+code, pre, pre code {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 13px;
+}
+
+/* Style right TOC - keep visible but compact */
+[view-transition-name="toc"],
+[style*="view-transition-name: toc"] {
+  font-size: 13px !important;
+  max-width: 200px !important;
+}
+
+/* Hide left sidebar/navigation */
+[view-transition-name="sidebar"],
+[style*="view-transition-name: sidebar"],
+nav[data-slot="sidebar"],
+aside.md-sidebar--primary,
+.md-sidebar--primary {
+  display: none !important;
+}
+
+/* Full width content when sidebar hidden */
+.md-content {
+  margin-left: 0 !important;
+}
+
+/* Content area - align with logo, leave room for TOC */
+article, .prose, .md-content__inner {
+  max-width: 850px !important;
+  margin-left: 180px !important;
+  margin-right: 220px !important;
+}
+
+/* More breathing room between sections */
+h2 { margin-top: 3rem; }
+h3 { margin-top: 2.5rem; }
+
+/* Tighter spacing when H3 follows H2 */
+h2 + h3 {
+  margin-top: 1rem !important;
+}
