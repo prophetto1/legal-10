@@ -20,3 +20,5 @@ venv
 # Results
 results/objects/*
 results/figures/*
+
+*.claude
