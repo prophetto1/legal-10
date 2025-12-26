@@ -1,0 +1,37 @@
+site_name: "Legal-10"
+site_url: "http://127.0.0.1:8000/"
+site_description: "Agentic benchmark for chained legal reasoning"
+repo_url: "https://github.com/prophetto1/legal-10"
+
+theme:
+  name: shadcn
+  icon: null
+  pygments_style:
+    light: shadcn-light
+    dark: github-dark
+
+extra_css:
+  - css/custom.css
+
+plugins:
+  - search
+
+markdown_extensions:
+  admonition:
+  codehilite:
+  fenced_code:
+  footnotes:
+  extra:
+  pymdownx.blocks.details:
+  pymdownx.tabbed:
+  pymdownx.blocks.tab:
+    combine_header_slug: true
+    separator: ___
+  pymdownx.progressbar:
+  pymdownx.snippets:
+  pymdownx.arithmatex:
+    generic: true
+  shadcn.extensions.echarts.alpha:
+  shadcn.extensions.codexec:
+  shadcn.extensions.iconify:
+  pymdownx.blocks.caption:
