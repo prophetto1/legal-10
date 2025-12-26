@@ -1,6 +1,6 @@
 import os
 
-BASE_DIRECTORY = "/Users/mattdahl/Documents/reglab/projects/legal_hallucinations"
+BASE_DIRECTORY = r"c:\DEVPROJECTS\legal-10\legal-10"
 
 # Data sources
 SCDB_PATH: str = os.path.join(
