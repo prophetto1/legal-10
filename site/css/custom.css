@@ -1,123 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Open+Sans:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
 
-/* Reset */
-* {
-  box-sizing: border-box;
-}
-
 /* Body text - clean serif */
-body {
+body, p, li, blockquote {
   font-family: 'Source Serif 4', Georgia, serif;
   font-size: 19px;
   line-height: 1.7;
-  color: #1a1a1a;
-  background: #fafafa;
 }
 
-p, li, blockquote {
+/* Table text - smaller than body */
+table, td, th {
   font-family: 'Source Serif 4', Georgia, serif;
-  font-size: 19px;
-  line-height: 1.7;
-  margin-bottom: 1.25rem;
+  font-size: 15px !important;
+  line-height: 1.5;
 }
 
 /* Headings - sans-serif for modern contrast */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Open Sans', -apple-system, sans-serif;
   font-weight: 600;
-  color: #111;
 }
 
-h1 {
-  font-size: 2.2rem !important;
-  margin-bottom: 0.5rem !important;
-}
-
-h2 {
-  font-size: 1.6rem !important;
-  margin-top: 3rem !important;
-  margin-bottom: 1rem !important;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-h3 {
-  font-size: 1.25rem !important;
-  margin-top: 2.5rem !important;
-  margin-bottom: 0.75rem !important;
-}
-
-/* Tighter spacing when H3 follows H2 */
-h2 + h3 {
-  margin-top: 1rem !important;
-}
-
-/* Table text - smaller than body */
-table {
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-size: 15px !important;
-  line-height: 1.5;
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.5rem 0;
-}
-
-th, td {
-  font-size: 15px !important;
-  padding: 0.6rem 0.8rem;
-  text-align: left;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-th {
-  font-weight: 600;
-  background: #f8f8f8;
-}
-
-/* Inline code */
-code {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 14px;
-  background: #f4f4f4;
-  padding: 0.15rem 0.4rem;
-  border-radius: 3px;
-}
-
-/* Code blocks */
-pre {
+/* Code font */
+code, pre, pre code {
   font-family: 'Roboto Mono', monospace;
   font-size: 13px;
-  background: #1e1e1e;
-  color: #d4d4d4;
-  padding: 1.25rem;
-  border-radius: 6px;
-  overflow-x: auto;
-  margin: 1.5rem 0;
 }
 
-pre code {
-  font-family: 'Roboto Mono', monospace;
-  font-size: 13px;
-  background: none;
-  padding: 0;
-  color: inherit;
-}
-
-/* Links */
-a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* Horizontal rules */
-hr {
-  border: none;
-  border-top: 1px solid #e5e5e5;
-  margin: 2rem 0;
+/* Style right TOC - keep visible but compact */
+[view-transition-name="toc"],
+[style*="view-transition-name: toc"] {
+  font-size: 13px !important;
+  max-width: 200px !important;
 }
 
 /* Hide left sidebar/navigation */
@@ -129,32 +42,23 @@ aside.md-sidebar--primary,
   display: none !important;
 }
 
-/* Style right TOC - keep visible but compact */
-[view-transition-name="toc"],
-[style*="view-transition-name: toc"] {
-  font-size: 13px !important;
-  font-family: 'Open Sans', sans-serif !important;
-  max-width: 200px !important;
-  color: #666;
-}
-
 /* Full width content when sidebar hidden */
 .md-content {
   margin-left: 0 !important;
 }
 
-/* Content area - centered with room for TOC */
+/* Content area - align with logo, leave room for TOC */
 article, .prose, .md-content__inner {
   max-width: 850px !important;
-  margin: 0 auto !important;
-  padding: 2rem !important;
-  background: white;
+  margin-left: 180px !important;
+  margin-right: 220px !important;
 }
 
-/* Responsive TOC hide */
-@media (max-width: 1200px) {
-  [view-transition-name="toc"],
-  [style*="view-transition-name: toc"] {
-    display: none !important;
-  }
+/* More breathing room between sections */
+h2 { margin-top: 3rem; }
+h3 { margin-top: 2.5rem; }
+
+/* Tighter spacing when H3 follows H2 */
+h2 + h3 {
+  margin-top: 1rem !important;
 }
