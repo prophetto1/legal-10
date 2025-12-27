@@ -3,6 +3,15 @@ site_url: "http://127.0.0.1:8000/"
 site_description: "Agentic benchmark for chained legal reasoning"
 repo_url: "https://github.com/prophetto1/legal-10"
 
+nav:
+  - Overview:
+    - Home: index.md
+    - Getting Started: getting_started.md
+  - Reference:
+    - Architecture: architecture.md
+    - API: api.md
+    - Roadmap: roadmap.md
+
 theme:
   name: shadcn
   icon: null
@@ -11,7 +20,7 @@ theme:
     dark: github-dark
 
 extra_css:
-  - css/custom.css
+  - css/custom.css?v=2
 
 plugins:
   - search

@@ -1,10 +1,7 @@
+​
 # L10 Agentic
 
----
-
 ## A Chained Legal Reasoning Benchmark for Large Language Models
-
----
 
 ### The Problem
 
@@ -16,10 +13,7 @@ A lawyer researching case law performs **sequential, dependent operations**: fin
 
 **L10 Agentic** is the first U.S. common law benchmark that evaluates LLMs on **chained legal reasoning**—measuring not just whether models get individual answers right, but whether they can maintain coherent reasoning across a complete legal research workflow.
 
----
-
 ### The Chain
-
 ```
 RULE PHASE
   S1  Known Authority
@@ -34,8 +28,29 @@ CONCLUSION PHASE
   S6  IRAC Synthesis
   S7  Citation Integrity ← gate: fabrication voids S6
 ```
+### Architecture
 
-### Step Definitions
+```
+legal-10/
+├── core/                          # Frozen contracts
+│   ├── ids/                       # Canonical ID generation
+│   ├── schemas/                   # CourtCase, ChainInstance, StepResult
+│   └── scoring/                   # Deterministic scorers
+│
+├── chain/                         # Execution engine
+│   ├── datasets/                  # HuggingFace loaders, instance builder
+│   ├── backends/                  # LLM backends (Mock, Dahl, etc.)
+│   ├── steps/                     # S1-S7 implementations
+│   └── runner/                    # ChainExecutor state machine
+│
+├── scripts/                       # CLI tools
+├── tests/                         # 247 tests
+└── legal-10-notes/                # Specifications
+```
+
+### Chained Steps
+
+The following steps were chained by shifting the framing of the test slightly.
 
 | Step | Name | Task | Ground Truth |
 |------|------|------|--------------|
@@ -50,8 +65,6 @@ CONCLUSION PHASE
 
 A model achieving 90% accuracy per step completes only **48% of full chains** (0.9^7). Chained evaluation reveals failure patterns that parallel benchmarks miss.
 
----
-
 ### Dual-Modality Testing
 
 S5 runs in two modes to measure how much model performance depends on context availability:
@@ -62,9 +75,6 @@ S5 runs in two modes to measure how much model performance depends on context av
 | **S5:rag** | Full opinion texts for both cases | Reasoning with complete information |
 
 The difference in accuracy between modes—the **Reasoning Bridge Gap**—quantifies the contribution of retrieval versus reasoning from extracted information alone. Both variants use the same ground truth (`edge.agree`), enabling direct comparison.
-
----
-
 ### Run a Chain
 
 ```python
@@ -101,20 +111,9 @@ steps = [
 backend = MockBackend()  # Or real LLM backend
 executor = ChainExecutor(backend=backend, steps=steps)
 result = executor.execute(instance)
-
-# Results
-for step_id, sr in result.step_results.items():
-    print(f"{step_id}: score={sr.score:.2f}, correct={sr.correct}")
 ```
 
----
-
-## Data Source
-
-This project uses data from the Dahl et al. Legal Hallucinations Dataset.
-
-
-(https://huggingface.co/datasets/reglab/legal_hallucinations_paper_data):
+## Data 
 
 | Source | Size | Contents |
 |--------|------|----------|
@@ -123,22 +122,16 @@ This project uses data from the Dahl et al. Legal Hallucinations Dataset.
 | `scotus_overruled_db.csv` | 288 records | Overruling relationships |
 | `fake_cases.csv` | 999 cases | Fabricated cases for hallucination detection |
 
-### Coverage Tiers
+#### Coverage Tiers
 
 The two sample files are independently drawn, creating coverage tiers:
 
 | Tier | Requirement | Available Steps |
 |------|-------------|-----------------|
-| **CHAIN_CORE** | Cited case has opinion text | S1, S2, S3, S4, S5:cb, S6, S7 |
-| **CHAIN_RAG_SUBSET** | Both cases have opinion text | All steps including S5:rag |
+| CHAIN_CORE | Cited case has opinion text | S1, S2, S3, S4, S5:cb, S6, S7 |
+| CHAIN_RAG_SUBSET | Both cases have opinion text | All steps including S5:rag |
 
----
-
-### Metrics
-
----
-
-### Per-Step
+#### Per-Step
 
 | Metric | Definition |
 |--------|------------|
@@ -146,7 +139,7 @@ The two sample files are independently drawn, creating coverage tiers:
 | Mean Score | `mean(score)` for executed steps |
 | Coverage | `executed / total instances` |
 
-### Chain-Level
+#### Chain-Level
 
 | Metric | Definition |
 |--------|------------|
@@ -160,9 +153,7 @@ The two sample files are independently drawn, creating coverage tiers:
 |--------|------------|
 | Reasoning Bridge Gap | S5:rag accuracy − S5:cb accuracy (aligned subset) |
 
----
-
-## Architecture
+### Architecture
 
 ```
 legal-10/
@@ -182,20 +173,16 @@ legal-10/
 └── legal-10-notes/                # Specifications
 ```
 
----
-
-## Citation
+### Citation
 
 ```bibtex
 @article{chung2025l10,
   title={L10 Agentic: A Chained Evaluation Protocol for Legal Reasoning in Large Language Models},
   author={Chung, Jon W.},
-  journal={scheduled; info will be released shortly}
+  journal={scheduled; info will be released shortly},
   year={2025}
 }
 ```
-
-## Original Data Source
 
 This project uses data from the Legal Hallucinations study. Please also cite:
 
@@ -211,50 +198,35 @@ This project uses data from the Legal Hallucinations study. Please also cite:
   doi     = {10.1093/jla/laae003}
 }
 ```
+- License: MIT
 
----
+### Roadmap
 
-## License
+**v1.0 (Current) — MVP Complete**
 
-MIT
+- 7-step chain architecture
+- All steps implemented (S1-S7)
+- ChainExecutor with dependency resolution
+- S5 dual-modality (CB + RAG)
+- S7 citation integrity gate
+- MockBackend for testing
+- Total 247 tests passing
+- HuggingFace data integration
 
----
+**v1.1 — Production Runs**
 
-## Roadmap
+- Real LLM backend integration
+- Pilot run (100 instances)
+- Full dataset run (CHAIN_CORE)
+- JSONL + Markdown output
+- Results visualization
+- easoning Bridge Gap measurement
 
-### v1.0 (Current) — MVP Complete ✓
+**v2.0 — External Benchmark Integration**
 
-- [x] 7-step chain architecture
-- [x] All steps implemented (S1-S7)
-- [x] ChainExecutor with dependency resolution
-- [x] S5 dual-modality (CB + RAG)
-- [x] S7 citation integrity gate
-- [x] MockBackend for testing
-- [x] 247 tests passing
-- [x] HuggingFace data integration
+- HELM Integration
 
-### v1.1 — Production Runs
-
-- [ ] Real LLM backend integration
-- [ ] Pilot run (100 instances)
-- [ ] Full dataset run (CHAIN_CORE)
-- [ ] JSONL + Markdown output
-- [ ] Results visualization
-- [ ] Reasoning Bridge Gap measurement
-
-### v2.0 — External Benchmark Integration
-
-#### HELM Integration
-
-```
-L10 Chain                    HELM Scenarios
-───────────────────          ────────────────
-S3 Validate Authority  ←───→ LegalBench overruling
-S4 Fact Extraction     ←───→ LegalBench definition extraction
-S5:cb Distinguish      ←───→ CaseHOLD 5-way MCQ
-```
-
-#### Additional Benchmarks
+- Additional Benchmarks
 
 | Benchmark | Jurisdiction | Integration Point |
 |-----------|--------------|-------------------|
@@ -262,7 +234,7 @@ S5:cb Distinguish      ←───→ CaseHOLD 5-way MCQ
 | LegalBench | US | S3, S4 task injection |
 | LegalAgentBench | Chinese | Tool-calling evaluation |
 
-#### Multi-Judge S6
+- Multi-Judge S6
 
 ```python
 class S6MultiJudge(Step):
@@ -271,43 +243,5 @@ class S6MultiJudge(Step):
     def score(self, parsed, ctx):
         scores = [judge.evaluate(parsed, RUBRIC) for judge in self.judges]
         return mean(scores), std(scores)
+
 ```
-
-### v2.1 — Agentic Mode
-
-Model-controlled retrieval with tool-calling:
-
-```python
-class AgenticStep(Step):
-    """Model decides what to retrieve"""
-    tools: list[Tool]
-    max_turns: int = 5
-
-    def run(self, ctx, backend):
-        while not done and turns < max_turns:
-            action = backend.decide(ctx, self.tools)
-            observation = action.execute()
-            ctx.update(observation)
-        return self.synthesize(ctx)
-```
-
----
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Ensure all tests pass (`pytest tests/ -v`)
-4. Submit a pull request
-
-See `legal-10-notes/L10_AGENTIC_SPEC.md` for detailed specifications.
-
----
-
-## Contact
-
-Questions? Open an issue or contact [jondev717@gmail.com](mailto:jondev717@gmail.com).
-
-<p align="center">
-  <i>Measuring what matters: not just legal knowledge, but legal reasoning.</i>
-</p>
